@@ -14,6 +14,8 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 def handler(event, context):
+    
+    logging.info('event::{}'.format(event))
 
     assetID = str(uuid.uuid4())
     sourceS3Bucket = event['Records'][0]['s3']['bucket']['name']
