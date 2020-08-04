@@ -1,38 +1,36 @@
 {
-  "Records": [
-    {
-      "eventVersion": "2.0",
-      "eventTime": "2017-08-08T00:19:56.995Z",
-      "requestParameters": {
-        "sourceIPAddress": "54.240.197.233"
-      },
-      "s3": {
-        "configurationId": "90bf2f16-1bdf-4de8-bc24-b4bb5cffd5b2",
-        "object": {
-          "eTag": "2fb17542d1a80a7cf3f7643da90cc6f4-18",
-          "key": "vodconsole/TRAILER.mp4",
-          "sequencer": "005989030743D59111",
-          "size": 143005084
-        },
-        "bucket": {
-          "ownerIdentity": {
-            "principalId": ""
-          },
-          "name": "rodeolabz-us-west-2",
-          "arn": "arn:aws:s3:::rodeolabz-us-west-2"
-        },
-        "s3SchemaVersion": "1.0"
-      },
-      "responseElements": {
-        "x-amz-id-2": "K5eJLBzGn/9NDdPu6u3c9NcwGKNklZyY5ArO9QmGa/t6VH2HfUHHhPuwz2zH1Lz4",
-        "x-amz-request-id": "E68D073BC46031E2"
-      },
-      "awsRegion": "us-west-2",
-      "eventName": "ObjectCreated:CompleteMultipartUpload",
-      "userIdentity": {
-        "principalId": ""
-      },
-      "eventSource": "aws:s3"
-    }
-  ]
+	"Records": [{
+		"eventVersion": "2.1",
+		"eventSource": "aws:s3",
+		"awsRegion": "ap-northeast-2",
+		"eventTime": "2020-08-04T00:54:57.568Z",
+		"eventName": "ObjectCreated:Put",
+		"userIdentity": {
+			"principalId": ""
+		},
+		"requestParameters": {
+			"sourceIPAddress": "172.30.0.62"
+		},
+		"responseElements": {
+			"x-amz-request-id": "7A288C4747327758",
+			"x-amz-id-2": "5qJH+vzyerBNDwFM1CtkAku+icZvy9I1HalaFmPIp8Xd1RYYITPwByXar/LEXVcQCQe2/g6Vsr98OIfIwYqcWsI3t6ilHLIJ"
+		},
+		"s3": {
+			"s3SchemaVersion": "1.0",
+			"configurationId": "a34c917d-2e82-4d9a-b267-9057517ce947",
+			"bucket": {
+				"name": "mz-mylearn-bucket",
+				"ownerIdentity": {
+					"principalId": ""
+				},
+				"arn": "arn:aws:s3:::mz-mylearn-bucket"
+			},
+			"object": {
+				"key": "test-media-files/timer.mp4",
+				"size": 1298746,
+				"eTag": "5fa35e69023a195fbb1c1e24f3ebaa86",
+				"sequencer": "005F28B1E253F42DA8"
+			}
+		}
+	}]
 }

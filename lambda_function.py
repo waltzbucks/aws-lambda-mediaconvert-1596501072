@@ -9,11 +9,12 @@ import random
 from urllib.parse import urlparse
 import logging
 from botocore.client import ClientError
+from botocore.retries import base
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-def handler(event, context):
+def lambda_handler(event, context):
     
     logging.info('event::{}'.format(event))
 
@@ -22,9 +23,10 @@ def handler(event, context):
     sourceS3Key = event['Records'][0]['s3']['object']['key']
     sourceS3 = 's3://'+ sourceS3Bucket + '/' + sourceS3Key
     destinationS3 = 's3://' + os.environ['DestinationBucket']
+    outputS3 = 's3://' + os.environ['DestinationBucket'] + '/' + sourceS3Key
     mediaConvertRole = os.environ['MediaConvertRole']
-    application = os.environ['Application']
     region = os.environ['AWS_DEFAULT_REGION']
+    baseurl = os.environ['BaseURL']
     statusCode = 200
     jobs = []
     job = {}
@@ -33,8 +35,10 @@ def handler(event, context):
     # Events from MediaConvert will have the assetID in UserMedata
     jobMetadata = {}
     jobMetadata['assetID'] = assetID
-    jobMetadata['application'] = application
     jobMetadata['input'] = sourceS3
+    jobMetadata['output'] = outputS3
+    jobMetadata['BaseURL'] = baseurl
+    jobMetadata['Filename'] = os.path.basename(sourceS3Key)
     
     try:    
         # Build a list of jobs to run against the input.  Use the settings files in WatchFolder/jobs
@@ -72,7 +76,8 @@ def handler(event, context):
             # destination bucket of the output paths in the job settings, but keep the rest of the
             # path
             destinationS3 = 's3://' + os.environ['DestinationBucket'] + '/' + os.path.dirname(sourceS3Key)
-            destinationURL = 'https://' + os.environ['DestinationBucket'] + '/' + os.path.dirname(sourceS3Key)
+            # destinationURL = 'https://' + os.environ['DestinationBucket'] + '/' + os.path.dirname(sourceS3Key)
+            destinationURL = baseurl + '/' + os.path.dirname(sourceS3Key)
             
             for outputGroup in jobSettings['OutputGroups']:
                 
@@ -84,6 +89,8 @@ def handler(event, context):
                     logger.info("templateDestinationKey == %s", templateDestinationKey)
                     outputGroup['OutputGroupSettings']['HlsGroupSettings']['Destination'] = destinationS3+templateDestinationKey
                     outputGroup['OutputGroupSettings']['HlsGroupSettings']['BaseUrl'] = destinationURL+templateDestinationKey
+                    
+                    jobMetadata['Manifest'] = destinationURL+templateDestinationKey+os.path.splitext(jobMetadata['Filename'])[0]+'.m3u8'
                 
                 else:
                     logger.error("Exception: Unknown Output Group Type %s", outputGroup['OutputGroupSettings']['Type'])
